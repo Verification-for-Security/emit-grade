@@ -1,6 +1,6 @@
 module Grade
-  ( dutch
-  , codegrade
+  ( pretty
+  , autograde
   ) where
 
 import System.Environment (lookupEnv)
@@ -11,10 +11,10 @@ import Text.Printf
 import Control.Monad (when)
 import Data.Maybe (isJust)
 
--- | Emits a grade according to the dutch grading system.
-dutch :: Float -> IO ()
-dutch grade = do
-  let color = if grade > 0.55 then Green else Red
+-- | Emits the grade in a human readable format.
+pretty :: Float -> IO ()
+pretty grade = do
+  let color = if grade >= 0.545 then Green else Red
   ansi <- hSupportsANSI stdout
   let setSGR' = when ansi . setSGR
   setSGR' [SetConsoleIntensity BoldIntensity]
@@ -25,9 +25,9 @@ dutch grade = do
   putStrLn "/10.0]"
   setSGR' [Reset]
 
--- | Emits a codegrade parsable grade when inside of
--- a codegrade environemnt.
-codegrade :: Float -> IO ()
-codegrade grade = do
+-- | Emits a grade compatible with the autograding environment.
+autograde :: Float -> IO ()
+autograde grade = do
+  -- Checks whether we are in a codegrade environment.
   env <- lookupEnv "CG_INFO"
   when (isJust env) $ print grade
