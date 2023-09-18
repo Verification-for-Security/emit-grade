@@ -37,17 +37,6 @@ ghc-options:
 library:
   source-dirs: src
 
-executables:
-  emit-grade-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - emit-grade
-
 tests:
   emit-grade-test:
     main:                Spec.hs
